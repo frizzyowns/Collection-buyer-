@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pokémon Collection Buyer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7fb;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: linear-gradient(to right, #ffcc33, #ff6699);
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #222;
+    }
+    section {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, button {
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background: #ff6699;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .card-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .card-entry span {
+      flex: 2;
+    }
+    .card-entry input {
+      flex: 1;
+      margin-left: 8px;
+    }
+    .total-box {
+      background: #fff3e0;
+      border: 1px solid #ffcc80;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>Pokémon Collection Buyer</header>
+
+<section>
+  <h2>Step 1: Add Your Cards</h2>
+  <input type="text" id="cardName" placeholder="Enter card name (e.g., Charizard)" />
+  <input type="number" id="cardQty" placeholder="Quantity" />
+  <button onclick="addCard()">Add Card</button>
+
+  <div id="collectionList"></div>
+
+  <div class="total-box" id="totalOutput">
+    No cards added yet.
+  </div>
+</section>
+
+<script>
+  let collection = [];
+
+  function addCard() {
+    const name = document.getElementById("cardName").value.trim();
+    const qty = parseInt(document.getElementById("cardQty").value.trim());
+    if (!name || isNaN(qty) || qty <= 0) {
+      alert("Enter a valid card name and quantity.");
+      return;
+    }
+
+    // Mock pricing lookup — replace with real fetch later
+    const mockPrices = {
+      "Charizard": 120.00,
+      "Pikachu": 10.00,
+      "Blastoise": 45.00,
+      "Bulbasaur": 8.00,
+      "Gengar": 30.00
+    };
+    const price = mockPrices[name] || 5.00;
+
+    collection.push({ name, qty, price });
+    document.getElementById("cardName").value = "";
+    document.getElementById("cardQty").value = "";
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    const listDiv = document.getElementById("collectionList");
+    const totalDiv = document.getElementById("totalOutput");
+    listDiv.innerHTML = "";
+    let totalMarket = 0;
+
+    collection.forEach(card => {
+      const div = document.createElement("div");
+      div.className = "card-entry";
+      div.innerHTML = `<span>${card.qty}x ${card.name} @ $${card.price.toFixed(2)}</span>`;
+      listDiv.appendChild(div);
+      totalMarket += card.qty * card.price;
+    });
+
+    const offer = totalMarket * 0.5;
+    totalDiv.innerHTML = `Market Value: $${totalMarket.toFixed(2)}<br>Offer (50%): <strong>$${offer.toFixed(2)}</strong>`;
+  }
+</script>
+
+</body>
+</html>
