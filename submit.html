@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Submit Your Collection</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Submit Collection</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #debug {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      color: #0f0;
+      padding: 10px;
+      font-size: 12px;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 999;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Submit Your Pokémon Collection</h2>
-    <form id="submissionForm">
-      <input type="text" id="name" placeholder="Full Name" required><br>
-      <input type="email" id="email" placeholder="Email" required><br>
-      <input type="tel" id="phone" placeholder="Phone (optional)"><br>
-      <input type="file" id="photos" accept="image/*" multiple required><br>
-      <label>
-        <input type="checkbox" id="labelRequest">
-        I would like a prepaid shipping label (optional)
-      </label><br>
-      <label>
-        <input type="checkbox" id="agreement" required>
-        I agree my collection will not be returned and will be assessed upon receipt.
-      </label><br><br>
-      <button type="submit" class="btn">Submit Collection</button>
-    </form>
-    <div id="confirmation" style="margin-top:20px;"></div>
-  </div>
+  <h2>Submit Your Pokémon Collection</h2>
+  <form id="submitForm">
+    <input type="text" placeholder="Full Name" id="name" required />
+    <input type="email" placeholder="Email Address" id="email" required />
+    <input type="text" placeholder="Phone (optional)" id="phone" />
+    <label><input type="checkbox" id="labelRequest" /> I would like a prepaid shipping label (optional)</label>
+    <input type="file" id="photos" multiple />
+    <button type="submit">Submit</button>
+  </form>
+  <p id="response"></p>
+  <div id="debug">Debug Mode Enabled</div>
   <script type="module" src="submit.js"></script>
 </body>
 </html>
