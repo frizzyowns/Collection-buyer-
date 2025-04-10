@@ -1,8 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-
 const firebaseConfig = {
-  apiKey: "AIzaSyCio4mXX3YzB7DXnvPiHvLAyBWEBgM_8Ps",
+  apiKey: "AIzaSyA9wEt-8vx6vl7Fmv3DGaM1riekaoah10U",
   authDomain: "frizzyowns-app.firebaseapp.com",
   projectId: "frizzyowns-app",
   storageBucket: "frizzyowns-app.appspot.com",
@@ -10,6 +7,9 @@ const firebaseConfig = {
   appId: "1:443774009075:web:3f5a2c4dfee927d991c186",
   measurementId: "G-E98TSKP4PG"
 };
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
