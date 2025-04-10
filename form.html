@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Collection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Submit Your Pokémon Collection</h2>
+        <form id="submissionForm">
+            <input type="text" name="name" placeholder="Full Name" required><br><br>
+            <input type="email" name="email" placeholder="Email" required><br><br>
+            <input type="tel" name="phone" placeholder="Phone (optional)"><br><br>
+            <input type="file" name="photos" accept="image/*" multiple><br><br>
+            <label>
+                <input type="checkbox" required>
+                I agree my collection will not be returned and will be assessed upon receipt.
+            </label><br><br>
+            <button type="submit" class="btn">Submit Collection</button>
+        </form>
+        <div id="confirmation" style="display:none; margin-top:20px;"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
