@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit Your Collection</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Submit Your Pokémon Collection</h2>
+    <form id="submissionForm">
+      <input type="text" id="name" placeholder="Full Name" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="tel" id="phone" placeholder="Phone (optional)"><br>
+      <input type="file" id="photos" accept="image/*" multiple required><br>
+      <label>
+        <input type="checkbox" id="labelRequest">
+        I would like a prepaid shipping label (optional)
+      </label><br>
+      <label>
+        <input type="checkbox" id="agreement" required>
+        I agree my collection will not be returned and will be assessed upon receipt.
+      </label><br><br>
+      <button type="submit" class="btn">Submit Collection</button>
+    </form>
+    <div id="confirmation" style="margin-top:20px;"></div>
+  </div>
+  <script type="module" src="submit.js"></script>
+</body>
+</html>
