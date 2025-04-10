@@ -4,12 +4,15 @@ body {
     text-align: center;
     padding: 50px;
 }
-
 .container {
     max-width: 600px;
     margin: auto;
 }
-
+input, textarea {
+    padding: 10px;
+    width: 80%;
+    margin: 10px 0;
+}
 .btn {
     background-color: #ffcb05;
     color: #2a75bb;
@@ -17,4 +20,5 @@ body {
     text-decoration: none;
     border-radius: 5px;
     font-weight: bold;
+    cursor: pointer;
 }
