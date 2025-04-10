@@ -1,16 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash for Pokémon</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cash for Pokémon</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Turn Your Pokémon Cards into Cash</h1>
-        <p>Send your collection. Get 30–50% of market value. <strong>No returns.</strong></p>
-        <a href="form.html" class="btn">Get Started</a>
-    </div>
+  <div class="container">
+    <h1>Turn Your Pokémon Cards into Cash</h1>
+    <p>Send your collection. Get 30–50% of market value. No returns.</p>
+    <form id="collectionForm">
+      <input type="text" name="name" placeholder="Full Name" required /><br />
+      <input type="email" name="email" placeholder="Email" required /><br />
+      <input type="tel" name="phone" placeholder="Phone (optional)" /><br />
+      <input type="file" name="photos" accept="image/*" multiple /><br />
+
+      <label>
+        <input type="checkbox" name="labelRequest" />
+        I would like a prepaid shipping label (optional)
+      </label><br />
+
+      <label>
+        <input type="checkbox" required />
+        I agree my collection will not be returned and will be assessed upon receipt.
+      </label><br /><br />
+
+      <button type="submit" class="btn">Submit Collection</button>
+    </form>
+
+    <div id="confirmation" style="margin-top:20px;"></div>
+  </div>
+
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    emailjs.init("uRsliX5XH37d8MjXt");
+
+    document.getElementById('collectionForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const name = form.name.value;
+      const email = form.email.value;
+      const phone = form.phone.value || "";
+      const labelRequest = form.labelRequest.checked ? "Yes" : "No";
+      const submissionId = Math.floor(Math.random() * 100000);
+
+      // Send email confirmation
+      emailjs.send("service_4aogxse", "template_c8yry52", {
+        name: name,
+        email: email,
+        submission_id: submissionId
+      }).then(function(response) {
+        console.log("Email sent!", response.status, response.text);
+      }).catch(function(error) {
+        console.error("EmailJS Error:", error);
+      });
+
+      // Send to Google Sheets via Sheety
+      fetch("https://api.sheety.co/15152b0088d0638e94cce3d22fe686ef/pokémonCollectionSubmissions/sheet1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sheet1: {
+            name: name,
+            email: email,
+            phone: phone,
+            submissionId: submissionId,
+            labelRequest: labelRequest,
+            status: "Pending"
+          }
+        })
+      }).then(response => response.json())
+        .then(data => {
+          console.log("Sheety logged:", data);
+        });
+
+      document.getElementById('confirmation').innerHTML = `
+        <h3>Thanks, ${name}!</h3>
+        <p>Your Submission ID is <strong>#${submissionId}</strong></p>
+        <p>Please include this number in your package.</p>
+        <p>Ship to:<br>Your Business Name<br>123 Card Lane<br>Cardtown, CA 90210</p>
+        <p>We’ll review your cards and send payment within 5 business days.</p>
+      `;
+
+      form.reset();
+    });
+  </script>
 </body>
 </html>
