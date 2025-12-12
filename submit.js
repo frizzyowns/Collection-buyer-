@@ -1,62 +1,71 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
-
+const debugEl = document.getElementById("debug");
 function log(msg) {
-  const el = document.getElementById("debug");
-  el.innerHTML += "<br>" + msg;
+  const line = `[${new Date().toLocaleTimeString()}] ${msg}\n`;
+  if (debugEl) debugEl.textContent += line;
 }
 
+log("submit.js loaded ✅");
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCio4mXX3YzB7DXnvPiHvLAyBWEBgM_8Ps",
+  authDomain: "frizzyowns-app.firebaseapp.com",
+  projectId: "frizzyowns-app",
+  storageBucket: "frizzyowns-app.firebasestorage.app",
+  messagingSenderId: "443774009075",
+  appId: "1:443774009075:web:3f5a2c4dfee927d991c186"
+};
+
 try {
-  const firebaseConfig = {
-    apiKey: "AIzaSyA9wEt-8vx6vl7Fmv3DGaM1riekaoah10U",
-    authDomain: "frizzyowns-app.firebaseapp.com",
-    projectId: "frizzyowns-app",
-    storageBucket: "frizzyowns-app.appspot.com",
-    messagingSenderId: "443774009075",
-    appId: "1:443774009075:web:3f5a2c4dfee927d991c186",
-    measurementId: "G-E98TSKP4PG"
-  };
+  firebase.initializeApp(firebaseConfig);
+  log("Firebase initialized ✅");
+} catch (e) {
+  log("Firebase init error (likely already initialized)");
+}
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
-  log("Firebase initialized");
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-  document.getElementById("submitForm").addEventListener("submit", async function(e) {
+const form = document.getElementById("submitForm");
+if (!form) {
+  log("❌ submitForm not found");
+} else {
+  log("Form found ✅");
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    log("Form submitted");
+    log("Submit clicked ✅");
 
     try {
       const name = document.getElementById("name").value;
       const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const labelRequest = document.getElementById("labelRequest").checked;
+      const notes = document.getElementById("notes").value;
       const files = document.getElementById("photos").files;
 
-      const photoURLs = [];
-      for (let file of files) {
-        const fileRef = ref(storage, `submissions/${Date.now()}_${file.name}`);
-        log("Uploading: " + file.name);
-        await uploadBytes(fileRef, file);
-        const url = await getDownloadURL(fileRef);
-        photoURLs.push(url);
-        log("Uploaded: " + url);
-      }
-
-      await addDoc(collection(db, "submissions"), {
-        name, email, phone, labelRequest, photoURLs,
-        status: "Pending", paid: false, notes: "",
-        created: serverTimestamp()
+      const docRef = await db.collection("submissions").add({
+        name,
+        email,
+        notes,
+        status: "Submitted",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      log("Submission added to Firestore");
-      document.getElementById("response").innerText = "Submitted! We'll be in touch soon.";
-      document.getElementById("submitForm").reset();
+      log("Firestore doc created ✅ " + docRef.id);
+
+      if (files && files.length) {
+        for (const file of files) {
+          const path = `submissions/${docRef.id}/${file.name}`;
+          await storage.ref(path).put(file);
+          log("Uploaded ✅ " + file.name);
+        }
+      }
+
+      alert("Submitted!");
+      form.reset();
+      log("Done ✅");
+
     } catch (err) {
-      log("Submission error: " + err.message);
+      log("❌ ERROR: " + err.message);
+      alert("Submit failed — see Debug box");
     }
   });
-} catch (err) {
-  log("Firebase Init Error: " + err.message);
 }
