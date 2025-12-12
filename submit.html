@@ -1,36 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <title>Submit Collection</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Submit – FrizzyownsCards</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    #debug {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #000;
-      color: #0f0;
-      padding: 10px;
-      font-size: 12px;
-      max-height: 150px;
-      overflow-y: auto;
-      z-index: 999;
-    }
-  </style>
 </head>
 <body>
-  <h2>Submit Your Pokémon Collection</h2>
+  <h1>Submit your collection</h1>
+
   <form id="submitForm">
-    <input type="text" placeholder="Full Name" id="name" required />
-    <input type="email" placeholder="Email Address" id="email" required />
-    <input type="text" placeholder="Phone (optional)" id="phone" />
-    <label><input type="checkbox" id="labelRequest" /> I would like a prepaid shipping label (optional)</label>
-    <input type="file" id="photos" multiple />
+    <label>Name</label><br />
+    <input id="name" required /><br /><br />
+
+    <label>Email</label><br />
+    <input id="email" type="email" required /><br /><br />
+
+    <label>Notes</label><br />
+    <textarea id="notes"></textarea><br /><br />
+
+    <label>Photos (optional)</label><br />
+    <input id="photos" type="file" accept="image/*" multiple /><br /><br />
+
     <button type="submit">Submit</button>
   </form>
-  <p id="response"></p>
-  <div id="debug">Debug Mode Enabled</div>
+
+  <h3>Debug</h3>
+  <pre id="debug" style="white-space:pre-wrap;background:#111;color:#0f0;padding:12px;border-radius:8px;"></pre>
+
   <script type="module" src="app.js"></script>
 </body>
 </html>
