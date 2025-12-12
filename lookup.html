@@ -1,16 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Check Submission Status</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h2>Check Your Submission</h2>
-    <input type="number" id="lookupId" placeholder="Enter Submission ID">
-    <button onclick="checkStatus()">Check</button>
-    <div id="result"></div>
-  </div>
-  <script type="module" src="lookup.js"></script>
-</body>
-</html>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCio4mXX3YzB7DXnvPiHvLAyBWEBgM_8Ps",
+  authDomain: "frizzyowns-app.firebaseapp.com",
+  projectId: "frizzyowns-app",
+  storageBucket: "frizzyowns-app.firebasestorage.app",
+  messagingSenderId: "443774009075",
+  appId: "1:443774009075:web:3f5a2c4dfee927d991c186"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById("lookupForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const id = document.getElementById("submissionId").value;
+  const snap = await getDoc(doc(db, "submissions", id));
+
+  const result = document.getElementById("result");
+  result.textContent = snap.exists()
+    ? `Status: ${snap.data().status}`
+    : "Submission not found";
+});
